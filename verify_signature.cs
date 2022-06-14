@@ -24,5 +24,5 @@ public static class Program
 		ReadOnlySpan<byte> signatureBytes = Convert.FromHexString(signature);
 
 		return CryptographicOperations.FixedTimeEquals(computedSignatureBytes, signatureBytes);
-  }
+	}
 }
