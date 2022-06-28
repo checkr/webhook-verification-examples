@@ -8,9 +8,9 @@ import (
 	"log"
 )
 
-func verifySignature(secret string, payload string, signature string) (bool, error) {
+func verifySignature(secret string, compactJSONPayload string, signature string) (bool, error) {
 	mac := hmac.New(sha256.New, []byte(secret))
-	mac.Write([]byte(payload))
+	mac.Write([]byte(compactJSONPayload))
 	expectedMac := mac.Sum(nil)
 	actualMac, err := hex.DecodeString(signature)
 	if err != nil {
@@ -21,10 +21,11 @@ func verifySignature(secret string, payload string, signature string) (bool, err
 
 func main() {
 	secret := "test-secret"
-	payload := `{"monday":"75F","tuesday":"80F"}`
+	// Warning! JSON must be compact. Pretty JSON with spaces will not work.
+	compactJSONPayload := `{"monday":"75F","tuesday":"80F"}`
 	signature := "b7412f05e981a473b5ecbdb5393afaea02a679db6d7c8e56803512ec4ba98151"
 
-	validity, err := verifySignature(secret, payload, signature)
+	validity, err := verifySignature(secret, compactJSONPayload, signature)
 	if err != nil {
 		log.Fatal(err)
 	}
