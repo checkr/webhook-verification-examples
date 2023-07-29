@@ -7,14 +7,14 @@ def verify_signature(secret, compact_json_payload, signature)
   OpenSSL.secure_compare(signature, computed_hash)
 end
 
-payload = {
-  monday: '75F',
-  tuesday: '80F'
-}
+payload = '{
+  "key1": "value1",
+  "key2": null
+}'
 # Warning! JSON must be compact. Pretty JSON with spaces will not work.
-compact_json_payload = payload.to_json
+compact_json_payload = JSON.parse(payload).to_json
 
-payload_signature = 'b7412f05e981a473b5ecbdb5393afaea02a679db6d7c8e56803512ec4ba98151'
+payload_signature = 'x-checkr-signature value'
 
-secret = 'test-secret'
+secret = 'secret key'
 puts verify_signature(secret, compact_json_payload, payload_signature) # should print true
